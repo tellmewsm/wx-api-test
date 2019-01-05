@@ -9,7 +9,8 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-
+.DS_Store
+test-output/
 .idea/
 
 ## File-based project format:
