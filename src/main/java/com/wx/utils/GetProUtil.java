@@ -20,15 +20,12 @@ import java.util.Properties;
  * 打印出来自己需要的内容
  *
  */
-@SuppressWarnings("unused")
 public class GetProUtil {
 	private String file;
 	private Properties prop;
 
 	/**
 	 * 构造方法
-	 * 
-	 * @param filePath
 	 * @throws Exception 
 	 */
 	public GetProUtil(String file) {
@@ -101,7 +98,6 @@ public class GetProUtil {
 	 * 获取某个配置文件里的所有配置信息
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
 	public HashMap<String, String> getAllKeyValue() {
 		HashMap<String, String> keyValus = new HashMap<String, String>();
 		Iterator it = prop.entrySet().iterator();

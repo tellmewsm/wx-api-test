@@ -5,7 +5,6 @@ package com.wx.utils;
  * 再依据分隔符进行过滤
  * +ProUtil
  */
-@SuppressWarnings("unused")
 public class GetLocatorUtils {
 	
 		GetProUtil locator;
@@ -18,7 +17,6 @@ public class GetLocatorUtils {
 	
 	/**
 	 * 获取元素属性对应数据值
-	 * @param locatorType
 	 * @return
 	 * @throws Exception
 	 */
