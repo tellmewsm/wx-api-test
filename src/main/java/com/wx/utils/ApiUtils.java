@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.wx.utils;
 
 import java.lang.annotation.Annotation;
@@ -8,7 +5,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
-
 import com.wx.description.WxParameters;
 import com.wx.description.WxRequest;
 import com.wx.entity.TestGlobal;
@@ -19,7 +15,6 @@ import com.wx.entity.TestGlobal;
  */
 public class ApiUtils {
 
-	@SuppressWarnings("unchecked")
 	public static <T> T create(Class<T> wx) {
 		
 		//创建一个代理类
@@ -39,6 +34,10 @@ public class ApiUtils {
 				testGlobal.setProtocol(protocol);
 				String description = ((WxRequest) annotations[0]).description();
 			    testGlobal.setDescription(description);
+
+				String wmethod = ((WxRequest) annotations[0]).wmethod();
+				testGlobal.setWmethod(wmethod);
+
 				// 方法注解
 				Annotation[][] parameters = method.getParameterAnnotations();
 				Integer length = parameters.length;
@@ -65,7 +64,7 @@ public class ApiUtils {
 					}
 					testGlobal.setUrl(args[1].toString());
 				}
-				return HttpUtils.httpsPost(testGlobal);
+				return HttpUtils.httpRequest(testGlobal);
 			}
 		});
 	}

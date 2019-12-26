@@ -36,7 +36,7 @@ public class HttpUtils {
 	private static String baseURL;
 
 	// 动态代理
-	public static Response httpsPost(TestGlobal testGlobal) throws Exception {
+	public static Response httpRequest(TestGlobal testGlobal) throws Exception {
 
 		// 判断请求头
 		if (testGlobal.getHeaders() == null) {

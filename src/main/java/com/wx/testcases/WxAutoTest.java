@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.wx.testcases;
 
 import com.wx.description.WxParameters;
@@ -13,6 +10,10 @@ import com.jayway.restassured.response.Response;
  */
 public interface WxAutoTest {
 
+	// https——get
+	@WxRequest(protocol = "https", wmethod = "get", description = "body")
+	Response HttpsGet(@WxParameters("body") String body, @WxParameters("url") String url);
+
 	// json格式https
 	@WxRequest(protocol = "https", wmethod = "post", description = "body")
 	Response HttpsPostBody(@WxParameters("body") String body, @WxParameters("url") String url);
@@ -23,7 +24,7 @@ public interface WxAutoTest {
 
 	// json格式https+header
 	@WxRequest(protocol = "https", wmethod = "post", description = "body")
-	Response HttpsPostBodyHeader(@WxParameters("url") String url,@WxParameters("body") String body,@WxParameters("header") Map<String, Object> header);
+	Response HttpsPostBodyHeader(@WxParameters("body") String body,@WxParameters("url") String url,@WxParameters("header") Map<String, Object> header);
 
 	// key=value格式https
 	@WxRequest(protocol = "https", wmethod = "post", description = "parameters")
