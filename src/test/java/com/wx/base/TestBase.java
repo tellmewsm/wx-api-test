@@ -1,6 +1,8 @@
 package com.wx.base;
 
 import com.wx.utils.HttpUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import com.alibaba.fastjson.JSON;
 import com.jayway.restassured.response.Response;
@@ -16,6 +18,7 @@ import java.util.Map;
  */
 public class TestBase {
 
+	private static Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 	private static  WxAutoTest wxAutoTest = ApiUtils.create(WxAutoTest.class);
 	private static Response response;
 	private Map<String, Object> Headers = new HashMap<>();
@@ -27,6 +30,8 @@ public class TestBase {
 		body.put("testUserName","tellme");
 
 		response = wxAutoTest.HttpsPostBody(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic");
+
+		logger.info(response.getHeaders().toString());
 
 		Assert.assertEquals(HttpUtils.getField("message"), "成功!");
 	}
