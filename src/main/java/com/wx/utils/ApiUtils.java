@@ -50,19 +50,22 @@ public class ApiUtils {
 					}
 					if (length == 0) {
 						throw new RuntimeException(String.format("缺少参数注解", method.getName()));
+					}else if(length == 1) {
+						testGlobal.setUrl(args[0].toString());
+					}else {
+						if (length == 3) {
+							testGlobal.setHeaders((Map<String, ?>) args[2]);
+						}
+						switch (description) {
+							case "parameters":
+								testGlobal.setParams((Map<String, ?>) args[0]);
+								break;
+							case "body":
+								testGlobal.setBody(args[0].toString());
+								break;
+						}
+						testGlobal.setUrl(args[1].toString());
 					}
-					if(length == 3) {
-						testGlobal.setHeaders((Map<String, ?>) args[2]);
-					}
-					switch(description) {
-					case "parameters":
-						testGlobal.setParams((Map<String, ?>) args[0]);
-						break;
-					case "body":	
-						testGlobal.setBody(args[0].toString());
-						break;
-					}
-					testGlobal.setUrl(args[1].toString());
 				}
 				return HttpUtils.httpRequest(testGlobal);
 			}

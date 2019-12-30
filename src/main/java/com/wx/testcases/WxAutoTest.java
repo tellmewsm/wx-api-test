@@ -10,9 +10,13 @@ import com.jayway.restassured.response.Response;
  */
 public interface WxAutoTest {
 
+	// http——get
+	@WxRequest(protocol = "http", wmethod = "get", description = "body")
+	Response HttpGet(@WxParameters("url") String url);
+
 	// https——get
 	@WxRequest(protocol = "https", wmethod = "get", description = "body")
-	Response HttpsGet(@WxParameters("body") String body, @WxParameters("url") String url);
+	Response HttpsGet(@WxParameters("url") String url);
 
 	// json格式https
 	@WxRequest(protocol = "https", wmethod = "post", description = "body")

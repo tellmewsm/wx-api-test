@@ -24,6 +24,14 @@ public class TestBase {
 	private Map<String, Object> Headers = new HashMap<>();
 	private Map<String, Object> body = new HashMap<>();
 
+
+	@Test
+	public void testHttpsGet() {
+
+		response = wxAutoTest.HttpsGet("https://www.baidu.com/");
+
+	}
+
 	@Test
 	public void testPostBody() {
 
@@ -31,7 +39,7 @@ public class TestBase {
 
 		response = wxAutoTest.HttpsPostBody(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic");
 
-		logger.info(response.getHeaders().toString());
+		logger.info(response.getContentType());
 
 		Assert.assertEquals(HttpUtils.getField("message"), "成功!");
 	}
