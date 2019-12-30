@@ -5,5 +5,17 @@
 ## about
 mvn install clean test
 
-自动化接口测试
+Test Steps Demo:
+
+```
+Map<String, Object> Headers = new HashMap<>();
+Map<String, Object> body = new HashMap<>();
+
+body.put("testUserName","tellme");
+Headers.put("Accept", "application/json, text/plain, */*");
+
+response = wxAutoTest.HttpsPostBodyHeader(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic",Headers);
+Assert.assertEquals(HttpUtils.getField("code"), "200");
+```
+
 

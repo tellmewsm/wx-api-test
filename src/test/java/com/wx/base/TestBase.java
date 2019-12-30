@@ -1,18 +1,14 @@
-/**
- * 
- */
 package com.wx.base;
 
-import static com.wx.variable.WxVariable.GPro;
-
+import com.wx.utils.HttpUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import com.alibaba.fastjson.JSON;
 import com.jayway.restassured.response.Response;
 import com.wx.testcases.WxAutoTest;
 import com.wx.utils.ApiUtils;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,31 +18,34 @@ import java.util.Map;
  */
 public class TestBase {
 
-	public static  WxAutoTest wxAutoTest = ApiUtils.create(WxAutoTest.class);
-	public static Response response;
+	private static Logger logger = LoggerFactory.getLogger(HttpUtils.class);
+	private static  WxAutoTest wxAutoTest = ApiUtils.create(WxAutoTest.class);
+	private static Response response;
+	private Map<String, Object> Headers = new HashMap<>();
+	private Map<String, Object> body = new HashMap<>();
 
 	@Test
 	public void testPostBody() {
 
-		response = wxAutoTest.HttpsPostBody(JSON.toJSONString("xxx"), GPro.getKey("ServerUrl"));
+		body.put("testUserName","tellme");
 
-		Assert.assertEquals("ok", "ok");
-		
+		response = wxAutoTest.HttpsPostBody(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic");
+
+		logger.info(response.getHeaders().toString());
+
+		Assert.assertEquals(HttpUtils.getField("message"), "成功!");
 	}
 
 	@Test
-	public void testDemo() {
+	public void testPostBodyHeader() {
 
-		Map<String, Object> Headers = new HashMap<>();
+		body.put("testUserName","tellme");
 
 		Headers.put("Accept", "application/json, text/plain, */*");
 
-		//使用各种请求方式
-		response = wxAutoTest.HttpsPostBody(JSON.toJSONString("xxx"), GPro.getKey("ServerUrl"));
+		response = wxAutoTest.HttpsPostBodyHeader(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic",Headers);
 
-		response = wxAutoTest.HttpsPostBodyHeader(JSON.toJSONString("xxx"), GPro.getKey("ServerUrl"),Headers);
-
-		Assert.assertEquals("ok", "ok");
+		Assert.assertEquals(HttpUtils.getField("code"), "200");
 
 	}
 	
