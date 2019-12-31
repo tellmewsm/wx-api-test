@@ -12,7 +12,7 @@ public class StrSubUtil {
 
 	public static List<String> getSubUtil(String soap, String rgex) {
 		List<String> list = new ArrayList<String>();
-		Pattern pattern = Pattern.compile(rgex);// 匹配的模式
+		Pattern pattern = Pattern.compile(rgex);
 		Matcher m = pattern.matcher(soap);
 		while (m.find()) {
 			int i = 1;
@@ -23,7 +23,7 @@ public class StrSubUtil {
 	}
 
 	public static String getSubUtilSimple(String soap, String rgex) {
-		Pattern pattern = Pattern.compile(rgex);// 匹配的模式
+		Pattern pattern = Pattern.compile(rgex);
 		Matcher m = pattern.matcher(soap);
 		while (m.find()) {
 			return m.group(1);
@@ -31,29 +31,37 @@ public class StrSubUtil {
 		return "";
 	}
 
+	public static List<String> getTwoSubUtil(String soap, String rgex) {
+		List<String> list = new ArrayList<String>();
+		Pattern pattern = Pattern.compile(rgex);
+		Matcher m = pattern.matcher(soap);
+		while (m.find()) {
+			int i = 1;
+			list.add(m.group(i));
+			list.add(m.group(i+1));
+			i++;
+		}
+		return list;
+	}
+
 	public static void main(String[] args) {
 
 		// 此处是中文输入的（）正则获取（）中内容
 		String str = "BD/赛事数据（32）/master";
-		Matcher mat = Pattern.compile("(?<=\\（)(\\S+)(?=\\）)").matcher(str);
-		while (mat.find()) {
-			System.out.println(mat.group());
+		String descriptions = StrSubUtil.getSubUtilSimple(str, "(?<=\\（)(\\S+)(?=\\）)");
+		System.out.println(descriptions);
 
-		}
-	}
+		String log = "{\"code\":200,\"message\":\"成功!\",\"result\":\"\",\"code\":200,\"message\":\"成功!!\",\"result\":\"\"}";
+		String description = StrSubUtil.getSubUtil(log, "message\":\"(.*?)\",\"result").get(1);
+		System.out.println(description);
+		String description1 = StrSubUtil.getSubUtilSimple(log, "message\":\"(.*?)\",\"result");
+		System.out.println(description1);
 
-	public static String description(String log) {
-		String description = null;	
-		try {
-		if (StrSubUtil.getSubUtil(log, "~(.*?)~").size() > 1) {
-			description = StrSubUtil.getSubUtil(log, "~(.*?)~").get(0)
-					+ StrSubUtil.getSubUtil(log, "~(.*?)~").get(1);
-		} else {
-			description = StrSubUtil.getSubUtil(log, "~(.*?)~").get(0) + "条件下" + "异常";
-		}
-		}catch (Exception e) {
-		}
-		return description;
+		String test = "{\"msg\":\"登录成功\",\"uid\":\"DAD3483647A94DBDB174C4C036CA8A80\",\"code\":\"1\"}";
+		String description2 = StrSubUtil.getTwoSubUtil(test, "\"uid\":\"(.+?)\",\"code\":\"(.+?)\"}").get(0);
+		String description3 = StrSubUtil.getTwoSubUtil(test, "\"uid\":\"(.+?)\",\"code\":\"(.+?)\"}").get(1);
+		System.out.println(description2);
+		System.out.println(description3);
 	}
 
 }
