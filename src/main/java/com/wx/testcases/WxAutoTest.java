@@ -34,6 +34,9 @@ public interface WxAutoTest {
 	@WxRequest(protocol = "https", wmethod = "post", description = "parameters")
 	Response HttpsPostPara(@WxParameters("parameters") Map<String, Object> parameters, @WxParameters("url") String url);
 
+	@WxRequest(protocol = "https", wmethod = "post", description = "parameters")
+	Response HttpsPostParaHeader(@WxParameters("parameters") Map<String, Object> parameters, @WxParameters("url") String url,@WxParameters("header") Map<String, Object> header);
+
 	// key=value格式http
 	@WxRequest(protocol = "http", wmethod = "post", description = "parameters")
 	Response HttpPostPara(@WxParameters("parameters") Map<String, Object> parameters, @WxParameters("url") String url);

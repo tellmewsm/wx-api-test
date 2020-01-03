@@ -44,6 +44,7 @@ public class HttpUtils {
         if (testGlobal.getHeaders() == null) {
             requestSpecifcation = given();
         } else {
+            logger.info("[Headers]=" + testGlobal.getHeaders());
             requestSpecifcation = given().headers(testGlobal.getHeaders());
         }
         // 判断是否加密
@@ -52,7 +53,7 @@ public class HttpUtils {
         }
         if (testGlobal.getWmethod().equals("get")) {
             try {
-                logger.info("[getUrl]=" + testGlobal.getUrl());
+                logger.info("[GetUrl]=" + testGlobal.getUrl());
                 response = requestSpecifcation.get(testGlobal.getUrl());
 
             } catch (Exception e) {
