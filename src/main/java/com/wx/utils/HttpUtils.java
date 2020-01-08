@@ -1,19 +1,14 @@
-/**
- *
- */
 package com.wx.utils;
 
 import static com.jayway.restassured.RestAssured.given;
 import static com.wx.variable.WxVariable.JsonType;
 import static com.wx.variable.WxVariable.FormType;
 import static com.wx.variable.WxVariable.Charset;
-
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
+import com.wx.exception.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -38,7 +33,7 @@ public class HttpUtils {
     private static String baseURL;
 
     // 动态代理
-    public static Response httpRequest(TestGlobal testGlobal) throws Exception {
+    public static Response httpRequest(TestGlobal testGlobal) throws HttpException {
 
         // 判断请求头
         if (testGlobal.getHeaders() == null) {
@@ -56,8 +51,8 @@ public class HttpUtils {
                 logger.info("[GetUrl]=" + testGlobal.getUrl());
                 response = requestSpecifcation.get(testGlobal.getUrl());
 
-            } catch (Exception e) {
-                logger.info("[Error]=" + e.getMessage());
+            } catch (HttpException e) {
+                logger.error("[Error]=" + e.getMessage());
             }
         }else {
 
@@ -68,8 +63,8 @@ public class HttpUtils {
                     response = requestSpecifcation.contentType(FormType + ";" + Charset).parameters(testGlobal.getParams())
                             .post(testGlobal.getUrl());
 
-                } catch (Exception e) {
-                    logger.info("[Error]=" + e.getMessage());
+                } catch (HttpException e) {
+                    logger.error("[Error]=" + e.getMessage());
                 }
 
             } else {
@@ -78,8 +73,8 @@ public class HttpUtils {
                     response = requestSpecifcation.contentType(JsonType + ";" + Charset).body(testGlobal.getBody())
                             .post(testGlobal.getUrl());
 
-                } catch (Exception e) {
-                    logger.info("[Error]=" + e.getMessage());
+                } catch (HttpException e) {
+                    logger.error("[Error]=" + e.getMessage());
                 }
             }
         }
@@ -169,7 +164,7 @@ public class HttpUtils {
 
     }
 
-    public static void resultCheck(String request, String url, String checkpath, String actual) throws IOException {
+    public static void resultCheck(String request, String url, String checkpath, String actual) {
         Reporter.log("——————【正常用例】——————");
         Reporter.log("【请求地址】: " + url);
         Reporter.log("【请求内容】: " + request);
@@ -178,7 +173,7 @@ public class HttpUtils {
         Assert.assertEquals(getField(checkpath), actual);
     }
 
-    public static void resultCheck(String request, String url, String check) throws IOException {
+    public static void resultCheck(String request, String url, String check)  {
         Reporter.log("——————【正常用例】——————");
         Reporter.log("【请求地址】: " + url);
         Reporter.log("【请求内容】: " + request);
