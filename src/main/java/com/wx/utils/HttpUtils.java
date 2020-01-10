@@ -4,10 +4,12 @@ import static com.jayway.restassured.RestAssured.given;
 import static com.wx.variable.WxVariable.JsonType;
 import static com.wx.variable.WxVariable.FormType;
 import static com.wx.variable.WxVariable.Charset;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import com.wx.exception.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +56,7 @@ public class HttpUtils {
             } catch (HttpException e) {
                 logger.error("[Error]=" + e.getMessage());
             }
-        }else {
+        } else {
 
             // 判断参数请求类型
             if (testGlobal.getBody() == null) {
@@ -114,7 +116,13 @@ public class HttpUtils {
 
     public static String responses() {
         // 返回值
-        String responses = response.asString();
+        String responses;
+        try {
+            responses = response.asString();
+        } catch (Exception e) {
+
+            responses = null;
+        }
         return responses;
 
     }
@@ -173,7 +181,7 @@ public class HttpUtils {
         Assert.assertEquals(getField(checkpath), actual);
     }
 
-    public static void resultCheck(String request, String url, String check)  {
+    public static void resultCheck(String request, String url, String check) {
         Reporter.log("——————【正常用例】——————");
         Reporter.log("【请求地址】: " + url);
         Reporter.log("【请求内容】: " + request);
