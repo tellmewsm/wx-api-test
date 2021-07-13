@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.40</version>
+			<version>1.2.70</version>
 		</dependency>
 
 		<dependency>
@@ -68,7 +68,7 @@
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>6.9.10</version>
-			 <scope>tmall</scope>
+			 <!--<scope>tmall</scope>-->
 		</dependency>
 
 		<dependency>
@@ -118,7 +118,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>wxautoapi-1.0</finalName>
+		<finalName>wxautotest-1.0.0</finalName>
 		<defaultGoal>compile</defaultGoal>
 		<plugins>
 			<plugin>
@@ -143,10 +143,10 @@
 							<name>usedefaultlisteners</name>
 							<value>false</value>
 						</property>
-						<property>
-							<name>listener</name>
-							<value>org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter</value>
-						</property>
+						<!--<property>-->
+							<!--<name>listener</name>-->
+							<!--<value>org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter</value>-->
+						<!--</property>-->
 					</properties>
 				</configuration>
 			</plugin>

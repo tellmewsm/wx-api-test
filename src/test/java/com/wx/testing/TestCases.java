@@ -63,7 +63,7 @@ public class TestCases {
 
         List<Object[]> dataProvider = new ArrayList<Object[]>();
 
-        String sql = "select * from TestCase";
+        String sql = "select * from TestCase where id = 2";
 
         List<TestCase> cases = DbUtils.casesAll(sql, DbUtils.getConn());
 
