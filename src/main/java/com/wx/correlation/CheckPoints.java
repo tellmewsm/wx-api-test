@@ -4,8 +4,6 @@ import com.googlecode.aviator.AviatorEvaluator;
 import com.jayway.jsonpath.JsonPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +59,7 @@ public class CheckPoints {
      *
      * @param args
      */
-    public static void main(String args[]) {
+/*    public static void main(String args[]) {
 
         //日期比较
         Map env7 = new HashMap();
@@ -75,6 +73,6 @@ public class CheckPoints {
         System.out.println(result);
         result = (Boolean) AviatorEvaluator.execute("date1 < '2200-12-20 00:00:00:00' ", env7);
         System.out.println(result);
-    }
+    }*/
 
 }
