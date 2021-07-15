@@ -63,6 +63,7 @@ public class TestBase {
         body.put("testUserName", "tellme");
         Headers.put("Accept", "application/json, text/plain, */*");
         response = wequest.HttpsPostBodyHeader(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic", Headers);
+        System.out.println(response.getResponseReturn());
         Assert.assertEquals(response.getField("code"), "200");
 
     }
