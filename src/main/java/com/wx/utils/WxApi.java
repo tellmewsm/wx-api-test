@@ -15,9 +15,9 @@ import com.wx.exception.AnnoException;
  * @author wuxi
  * @date 2018年11月2日
  */
-public class ApiUtils {
+public class WxApi {
 
-    public static <T> T create(Class<T> wx) {
+    public static <T> T build(Class<T> wx) {
 
         //创建一个代理类
         return (T) Proxy.newProxyInstance(wx.getClassLoader(), new Class[]{wx}, new InvocationHandler() {

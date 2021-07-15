@@ -4,16 +4,12 @@ import com.wx.correlation.CheckPoints;
 import com.wx.correlation.ParasReplace;
 import com.wx.correlation.SaveParams;
 import com.wx.correlation.StringToMap;
+import com.wx.entity.ResponseResult;
 import com.wx.entity.TestCase;
-import com.wx.utils.HttpUtils;
-import com.wx.utils.StrSubUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import com.alibaba.fastjson.JSON;
-import com.jayway.restassured.response.Response;
-import com.wx.testcases.WxAutoTest;
-import com.wx.utils.ApiUtils;
+import com.wx.testcases.Wequest;
+import com.wx.utils.WxApi;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -25,29 +21,39 @@ import java.util.Map;
  */
 public class TestBase {
 
-    private static Logger logger = LoggerFactory.getLogger(HttpUtils.class);
-    private static WxAutoTest wxAutoTest = ApiUtils.create(WxAutoTest.class);
-    private static Response response;
+    private static Wequest wequest = WxApi.build(Wequest.class);
+    private static ResponseResult response;
     private Map<String, Object> Headers = new HashMap<>();
     private Map<String, Object> body = new HashMap<>();
 
+    public static void main(String args[]) {
+        testHttpsGet();
+    }
 
     @Test
-    public void testHttpsGet() {
+    public static void testHttpsGetError() {
+        response = wequest.HttpsGet("https://www.baidu.com11111");
+        if (!response.success) {
+            System.out.println(response.message);
+        }
+    }
 
-        response = wxAutoTest.HttpsGet("https://www.baidu.com/");
+    @Test
+    public static void testHttpsGet() {
+        response = wequest.HttpsGet("https://api.apiopen.top/searchMusic");
+        System.out.println(response.getResponseReturn());
+        System.out.println(response.getHeaders());
+        System.out.println(response.getStatusCode());
+        System.out.println(response.getTime());
+        System.out.println(response.getField("message"));
     }
 
     @Test
     public void testPostBody() {
 
         body.put("testUserName", "tellme");
-        response = wxAutoTest.HttpsPostBody(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic");
-        //通过json解析
-        logger.info("message>>>>>>>" + HttpUtils.getField("message"));
-        //通过string截取
-        logger.info("message>>>>>>>" + StrSubUtil.getSubUtilSimple(HttpUtils.responses(), "message\":\"(.*?)\",\"result"));
-        Assert.assertEquals(HttpUtils.getField("message"), "成功!");
+        response = wequest.HttpsPostBody(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic");
+        Assert.assertEquals(response.getField("message"), "成功!");
 
     }
 
@@ -56,8 +62,8 @@ public class TestBase {
 
         body.put("testUserName", "tellme");
         Headers.put("Accept", "application/json, text/plain, */*");
-        response = wxAutoTest.HttpsPostBodyHeader(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic", Headers);
-        Assert.assertEquals(HttpUtils.getField("code"), "200");
+        response = wequest.HttpsPostBodyHeader(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic", Headers);
+        Assert.assertEquals(response.getField("code"), "200");
 
     }
 
@@ -65,38 +71,28 @@ public class TestBase {
     public void testcheckByJsonPath() {
 
         body.put("testUserName", "tellme");
-
-        response = wxAutoTest.HttpsPostBody(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic");
+        response = wequest.HttpsPostBody(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic");
         //通过jsonPath检查
-        CheckPoints.checkByJsonPath(HttpUtils.responses(), "$.code=200;$.message=成功!");
-
+        CheckPoints.checkByJsonPath(response.getResponseReturn(), "$.code=200;$.message=成功!");
         //关联
-        SaveParams.saveMapbyJsonPath(HttpUtils.responses(), "user=$.message;password=$.code");
-        logger.info(SaveParams.saveMap.toString());
-
+        SaveParams.saveMapbyJsonPath(response.getResponseReturn(), "user=$.message;password=$.code");
     }
 
     @Test
     public void testParasReplace() {
 
         body.put("testUserName", "tellme");
-        response = wxAutoTest.HttpsPostBody(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic");
-
+        response = wequest.HttpsPostBody(JSON.toJSONString(body), "https://api.apiopen.top/searchMusic");
         //通过jsonPath检查
-        CheckPoints.checkByJsonPath(HttpUtils.responses(), "$.code=200;$.message=成功!");
-
+        CheckPoints.checkByJsonPath(response.getResponseReturn(), "$.code=200;$.message=成功!");
         TestCase testCase = new TestCase();
         testCase.setUrl("https://api.apiopen.top/searchMusic");
         testCase.setParams("user=${user}&password=${password}");
         testCase.setHeader("user=${user};password=${password};mobile=xxxxxx");
-
         //关联
-        testCase = ParasReplace.matcher(testCase,SaveParams.saveMapbyJsonPath(HttpUtils.responses(), "user=$.message;password=$.code"));
-
-        wxAutoTest.HttpsPostParaHeader(StringToMap.covertStringToMp(testCase.getParams(), "&"), testCase.getUrl(), StringToMap.covertStringToMp(testCase.getHeader()));
-
-        wxAutoTest.HttpsPostBodyHeader(JSON.toJSONString(StringToMap.covertStringToMp(testCase.getParams(), "&")), testCase.getUrl(), StringToMap.covertStringToMp(testCase.getHeader()));
-
+        testCase = ParasReplace.matcher(testCase, SaveParams.saveMapbyJsonPath(response.getResponseReturn(), "user=$.message;password=$.code"));
+        wequest.HttpsPostParaHeader(StringToMap.covertStringToMp(testCase.getParams(), "&"), testCase.getUrl(), StringToMap.covertStringToMp(testCase.getHeader()));
+        wequest.HttpsPostBodyHeader(JSON.toJSONString(StringToMap.covertStringToMp(testCase.getParams(), "&")), testCase.getUrl(), StringToMap.covertStringToMp(testCase.getHeader()));
     }
 
 }
