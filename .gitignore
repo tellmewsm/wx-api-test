@@ -12,6 +12,7 @@ buildNumber.properties
 .DS_Store
 test-output/
 .idea/
+.iml
 
 # Editor directories and files
 .idea
